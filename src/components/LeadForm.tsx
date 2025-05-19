@@ -1,0 +1,140 @@
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
+import { Facebook, Linkedin, Instagram } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+const LeadForm = () => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [industry, setIndustry] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const industries = [
+    "E-commerce",
+    "Ed-Tech",
+    "Hospitality",
+    "Medicine",
+    "Logistic",
+    "Insurance",
+    "Real Estate"
+  ];
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("https://script.google.com/macros/s/AKfycbxNl2P3y8wW9WCmKXTGxhTZDFYbrgu6goFoCOnFyBc2y0eYDKKHcth2nrbbgwlt65c/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          email,
+          industry
+        }),
+      });
+
+      toast.success("Success! Your data has been submitted.");
+
+      // Reset form
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setIndustry("");
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast.error("An error occurred. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="w-full md:w-96 bg-white rounded-lg p-6 shadow-lg">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="w-full">
+            <Input
+              placeholder="First name..."
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+              className="rounded-md border border-gray-300"
+            />
+          </div>
+          <div className="w-full">
+            <Input
+              placeholder="Last name..."
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              required
+              className="rounded-md border border-gray-300"
+            />
+          </div>
+        </div>
+
+        <div>
+          <Input
+            type="email"
+            placeholder="Email address..."
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="rounded-md border border-gray-300"
+          />
+        </div>
+
+        <div>
+          <Select value={industry} onValueChange={setIndustry} required>
+            <SelectTrigger className="w-full rounded-md border border-gray-300">
+              <SelectValue placeholder="Select industry..." />
+            </SelectTrigger>
+            <SelectContent>
+              {industries.map((ind) => (
+                <SelectItem key={ind} value={ind}>
+                  {ind}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full h-12 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-md transition-colors"
+        >
+          {isSubmitting ? "Processing..." : "Download Now"}
+        </Button>
+      </form>
+
+      <div className="flex justify-center mt-6 space-x-4">
+        <a href="#" className="text-gray-400 hover:text-blue-500 transition-colors">
+          <Facebook size={20} />
+        </a>
+        <a href="#" className="text-gray-400 hover:text-blue-500 transition-colors">
+          <Linkedin size={20} />
+        </a>
+        <a href="#" className="text-gray-400 hover:text-blue-500 transition-colors">
+          <Instagram size={20} />
+        </a>
+      </div>
+    </div>
+  );
+};
+
+export default LeadForm;
+
