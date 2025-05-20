@@ -33,19 +33,22 @@ const LeadForm = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("https://script.google.com/macros/s/AKfycbxNl2P3y8wW9WCmKXTGxhTZDFYbrgu6goFoCOnFyBc2y0eYDKKHcth2nrbbgwlt65c/exec", {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          email,
-          industry
-        }),
-      });
+      const response = await fetch(
+        "https://script.google.com/macros/s/AKfycbxNl2P3y8wW9WCmKXTGxhTZDFYbrgu6goFoCOnFyBc2y0eYDKKHcth2nrbbgwlt65c/exec",
+        {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            firstName,
+            lastName,
+            email,
+            industry
+          }),
+        }
+      );
 
       toast.success("Success! Your data has been submitted.");
 
@@ -121,14 +124,30 @@ const LeadForm = () => {
         </Button>
       </form>
 
+      {/* Social Media Links */}
       <div className="flex justify-center mt-6 space-x-4">
-        <a href="#" className="text-gray-400 hover:text-blue-500 transition-colors">
+        <a
+          href="https://www.facebook.com/YOUR_FACEBOOK_PAGE"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-gray-400 hover:text-blue-500 transition-colors"
+        >
           <Facebook size={20} />
         </a>
-        <a href="#" className="text-gray-400 hover:text-blue-500 transition-colors">
+        <a
+          href="https://www.linkedin.com/company/theconverseai/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-gray-400 hover:text-blue-500 transition-colors"
+        >
           <Linkedin size={20} />
         </a>
-        <a href="#" className="text-gray-400 hover:text-blue-500 transition-colors">
+        <a
+          href="https://www.instagram.com/theconverseai?igsh=MXc4M2o2MG1namR2eA=="
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-gray-400 hover:text-blue-500 transition-colors"
+        >
           <Instagram size={20} />
         </a>
       </div>
@@ -137,4 +156,3 @@ const LeadForm = () => {
 };
 
 export default LeadForm;
-
