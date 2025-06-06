@@ -28,6 +28,40 @@ const LeadForm = () => {
     "Real Estate"
   ];
 
+    const getIndustryPDF = (industry: string) => {
+    // Map industries to their corresponding PDF files
+    const pdfMap: { [key: string]: string } = {
+      "E-commerce": "/pdfs/Ecommerce converseai.pdf",
+      "Ed-Tech": "/pdfs/Edtech converseai.pdf",
+      "Hospitality": "/pdfs/hotel industry converseai.pdf",
+      "Medicine": "/pdfs/Medical industry converseai.pdf",
+      "Logistic": "/pdfs/Logistic business converseai.pdf",
+      "Insurance": "/pdfs/Insurance company converseai.pdf",
+      "Real Estate": "/pdfs/Real Estate converseai.pdf" // Note: This file doesn't exist yet
+    };
+
+    return pdfMap[industry] || "/pdfs/Ecommerce converseai.pdf"; // Default to E-commerce guide if industry not found
+  };
+
+  const handleDownloadPDF = (industry: string) => {
+    const pdfPath = getIndustryPDF(industry);
+    const fileName = pdfPath.split('/').pop() || 'guide.pdf';
+
+    // Create a link element
+    const link = document.createElement('a');
+    // Set the href to the PDF file path
+    link.href = pdfPath;
+    // Set the download attribute
+    link.download = fileName;
+    // Append to the document
+    document.body.appendChild(link);
+    // Trigger the click event
+    link.click();
+    // Clean up
+    document.body.removeChild(link);
+  };
+
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -51,7 +85,9 @@ const LeadForm = () => {
       );
 
       toast.success("Success! Your data has been submitted.");
-
+      
+      // Trigger PDF download after successful submission with the selected industry
+      handleDownloadPDF(industry);
       // Reset form
       setFirstName("");
       setLastName("");
